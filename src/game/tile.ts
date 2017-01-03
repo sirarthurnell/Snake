@@ -42,6 +42,7 @@ export class Tile {
         }
 
         let gridPosition = this._grid.getPosition(this._positionX, this._positionY);
+        console.log(gridPosition);
         this._tileShape.x = gridPosition.pixelPositionX;
         this._tileShape.y = gridPosition.pixelPositionY;
     }
@@ -57,9 +58,14 @@ export class Tile {
 
         g
             .beginFill("yellow")
-            .drawRect(x, y, width, height);
+            .drawRect(0, 0, width, height);
 
+        tileShape.x = x;
+        tileShape.y = y;
+        
         this._tileShape = tileShape;
         stage.addChild(this._tileShape);
+
+        console.log(this._tileShape);
     }
 }

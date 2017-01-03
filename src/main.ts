@@ -17,11 +17,13 @@ $(function(){
     grid = new Grid(10, 10, 10, 10);
     game = new Game(grid);
     game.createCanvas(container);
-    
+
     background = new Background();
     game.addGameElement(background);
     tile = new Tile();
     game.addGameElement(tile);
+    tile.positionX = 3;
+    tile.positionY = 3;
 
     game.update();
 });
