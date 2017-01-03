@@ -4,7 +4,7 @@ import { IGameElement } from './iGameElement';
 
 export class Background implements IGameElement {
 
-    private _gridShape: createjs.Shape;
+    private _gridShape: createjs.Shape = null;
     private _grid: Grid;
     private _game: Game;
 
@@ -16,48 +16,43 @@ export class Background implements IGameElement {
     removeFromGame(stage: createjs.Stage): void {
         if (this._gridShape != null) {
             stage.removeChild(this._gridShape);
+            this._gridShape = null;
         }
     }
 
     update(stage: createjs.Stage): void {
-        this.drawGrid(stage);
+        if (this._gridShape === null) {
+            this.draw(stage);
+        }
     }
 
-    drawGrid(stage: createjs.Stage): void {
-        if (this._gridShape != null) {
+    draw(stage: createjs.Stage): void {
+        let gridShape = new createjs.Shape(),
+            g = gridShape.graphics,
+            i = 0;
 
-            return;
+        g
+            .moveTo(0, 0)
+            .setStrokeStyle(1)
+            .beginStroke('lightgreen');
 
-        } else {
-
-            let gridShape = new createjs.Shape(),
-                g = gridShape.graphics,
-                i = 0;
-
+        for (i = 0; i < this._grid.heightInTiles; i++) {
+            let rowCoordinate = i * this._grid.tileSizeY;
             g
-                .moveTo(0, 0)
-                .setStrokeStyle(1)
-                .beginStroke('white');
-
-            for (i = 0; i < this._grid.heightInTiles; i++) {
-                let rowCoordinate = i * this._grid.tileSizeY;
-                g
-                    .moveTo(0, rowCoordinate)
-                    .lineTo(this._grid.widthInPixels, rowCoordinate);
-            }
-
-            for (i = 0; i < this._grid.widthInTiles; i++) {
-                let columnCoordinate = i * this._grid.tileSizeX;
-                g
-                    .moveTo(columnCoordinate, 0)
-                    .lineTo(columnCoordinate, this._grid.heightInPixels);
-            }
-
-            g.endStroke();
-            this._gridShape = gridShape;
-            stage.addChild(this._gridShape);
-
+                .moveTo(0, rowCoordinate)
+                .lineTo(this._grid.widthInPixels, rowCoordinate);
         }
+
+        for (i = 0; i < this._grid.widthInTiles; i++) {
+            let columnCoordinate = i * this._grid.tileSizeX;
+            g
+                .moveTo(columnCoordinate, 0)
+                .lineTo(columnCoordinate, this._grid.heightInPixels);
+        }
+
+        g.endStroke();
+        this._gridShape = gridShape;
+        stage.addChild(this._gridShape);
     }
 
 }

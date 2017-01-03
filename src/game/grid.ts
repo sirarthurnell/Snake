@@ -1,3 +1,5 @@
+import { GridPosition } from './gridPosition';
+
 export class Grid {
 
     private _widthInTiles: number;
@@ -42,6 +44,19 @@ export class Grid {
     private calculatePixelDimensions(): void {
         this._widthInPixels = this._widthInTiles * this._tileSizeX;
         this._heightInPixels = this._heightInTiles * this._tileSizeY;
+    }
+
+    getPosition(x: number, y: number): GridPosition {
+        let xNotInBounds = x < 0 || this._widthInTiles < x,
+            yNotInBounds = y < 0 || this._heightInTiles < y;
+
+        if(xNotInBounds || yNotInBounds) {
+            throw new Error("Grid coordinates not inside grid.");
+        } else {
+            let position: GridPosition;
+            position = new GridPosition(x, y, x * this._tileSizeX, y * this._tileSizeY);
+            return position;
+        }
     }
 
 }
