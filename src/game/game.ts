@@ -33,7 +33,12 @@ export class Game {
     }
 
     setScreen(screen: Screen) {
+        if (this._screen !== null) {
+            this._screen.onScreenUnsetted();
+        }
+
         this._screen = screen;
+        this._screen.onScreenSetted();
     }
 
     startUpdating(): void {

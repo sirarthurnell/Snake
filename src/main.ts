@@ -17,7 +17,7 @@ $(function(){
     game.createCanvas(container);
 
     gameScreen = new GameScreen(game);
-    gameScreen.createScreen();
+    gameScreen.init();
     game.setScreen(gameScreen);
 
     game.startUpdating();

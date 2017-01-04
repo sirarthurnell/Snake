@@ -1,7 +1,7 @@
 import { Game } from './game';
 import { IGameElement } from './iGameElement';
 
-export class Screen {
+export abstract class Screen {
 
     private _gameElements: IGameElement[] = [];
     private _stage: createjs.Stage;
@@ -15,6 +15,9 @@ export class Screen {
         this._game = game;
         this._stage = new createjs.Stage(this._game.id);
     }
+
+    abstract onScreenSetted(): void;
+    abstract onScreenUnsetted(): void;
 
     addGameElement(gameElement: IGameElement) {
         this._gameElements.push(gameElement);
