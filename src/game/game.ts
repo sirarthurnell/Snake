@@ -49,7 +49,7 @@ export class Game {
 
     end(): void {
         createjs.Ticker.removeEventListener('tick', this._updateHandler);
-        alert('Game Over');
+        console.log('Game Over');
     }
 
     private update(): void {

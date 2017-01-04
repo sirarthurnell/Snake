@@ -44,7 +44,7 @@ export class Snake implements IGameElement {
                 }
 
             }
-            
+
         }
 
         return false;
@@ -57,19 +57,7 @@ export class Snake implements IGameElement {
 
         this.updateBodyPosition();
         this.updateBodyColor();
-        this.updateBodyLength();
         this._body.forEach(tile => tile.update(stage));
-    }
-
-    private updateBodyLength(): void {
-        if (this._recentlyEated.length > 0) {
-
-            while (this._recentlyEated.length > 0) {
-                let recentTile = this._recentlyEated.pop();
-                this._body.unshift(recentTile);
-            }
-
-        }
     }
 
     private updateBodyColor(): void {
@@ -78,29 +66,23 @@ export class Snake implements IGameElement {
 
     private updateBodyPosition(): void {
         let head = this.getHead(),
-            sameX = head.positionX === this.positionX,
-            sameY = head.positionY === this.positionY,
             lastX = 0,
             lastY = 0,
             newX = this.positionX,
             newY = this.positionY,
             currentTile: Tile = null;
 
-        if (!(sameX && sameY)) {
+        for (let i = this._body.length - 1; i > -1; i--) {
+            currentTile = this._body[i];
 
-            for (let i = this._body.length - 1; i > -1; i--) {
-                currentTile = this._body[i];
+            lastX = currentTile.positionX;
+            lastY = currentTile.positionY;
 
-                lastX = currentTile.positionX;
-                lastY = currentTile.positionY;
+            currentTile.positionX = newX;
+            currentTile.positionY = newY;
 
-                currentTile.positionX = newX;
-                currentTile.positionY = newY;
-
-                newX = lastX;
-                newY = lastY;
-            }
-
+            newX = lastX;
+            newY = lastY;
         }
     }
 
@@ -121,14 +103,16 @@ export class Snake implements IGameElement {
         }
     }
 
-    eat(tile: Tile): void {
-        let newHead = new Tile();
+    grow(): void {
+        let newTail = new Tile(),
+            oldTail = this._body[0];
 
-        newHead.positionX = tile.positionX;
-        newHead.positionY = tile.positionY;
-        newHead.color = this.color;
+        newTail.positionX = oldTail.positionX;
+        newTail.positionY = oldTail.positionY;
+        newTail.color = this.color;
 
-        this._recentlyEated.push(newHead);
+        this._screen.addGameElement(newTail);
+        this._body.unshift(newTail);
     }
 
 }

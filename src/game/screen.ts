@@ -18,7 +18,7 @@ export abstract class Screen {
 
     abstract onScreenSetted(): void;
     abstract onScreenUnsetted(): void;
-    abstract performCalculations(): void;
+    abstract performCalculations(): boolean;
 
     addGameElement(gameElement: IGameElement) {
         this._gameElements.push(gameElement);
@@ -34,13 +34,10 @@ export abstract class Screen {
     }
 
     update(): void {
-        this.performCalculations();
-
-        this._gameElements.forEach(element => {
-            element.update(this._stage);
-        });
-
-        this._stage.update();
+        if (this.performCalculations()) {
+            this._gameElements.forEach((element) => element.update(this._stage));
+            this._stage.update();
+        }
     }
 
 }
