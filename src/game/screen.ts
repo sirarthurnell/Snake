@@ -18,6 +18,7 @@ export abstract class Screen {
 
     abstract onScreenSetted(): void;
     abstract onScreenUnsetted(): void;
+    abstract performCalculations(): void;
 
     addGameElement(gameElement: IGameElement) {
         this._gameElements.push(gameElement);
@@ -33,6 +34,8 @@ export abstract class Screen {
     }
 
     update(): void {
+        this.performCalculations();
+
         this._gameElements.forEach(element => {
             element.update(this._stage);
         });

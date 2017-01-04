@@ -17,6 +17,7 @@ $(function(){
     game.createCanvas(container);
 
     gameScreen = new GameScreen(game);
+    gameScreen.setEndOfGameHandler(game.end.bind(game));
     gameScreen.init();
     game.setScreen(gameScreen);
 

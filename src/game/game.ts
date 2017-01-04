@@ -7,6 +7,7 @@ export class Game {
     private _$canvas: JQuery;
     private _$container: JQuery;
     private _screen: Screen;
+    private _updateHandler = this.update.bind(this);
 
     private _id: string;
     get id(): string {
@@ -43,7 +44,12 @@ export class Game {
 
     startUpdating(): void {
         createjs.Ticker.setFPS(1);
-        createjs.Ticker.addEventListener('tick', this.update.bind(this));
+        createjs.Ticker.addEventListener('tick', this._updateHandler);
+    }
+
+    end(): void {
+        createjs.Ticker.removeEventListener('tick', this._updateHandler);
+        alert('Game Over');
     }
 
     private update(): void {

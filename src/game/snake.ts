@@ -29,6 +29,27 @@ export class Snake implements IGameElement {
         }
     }
 
+    isSelfCollided(): boolean {
+        if (this._body !== null) {
+
+            let head = this.getHead();
+            for (let i = this._body.length - 2; i > -1; i--) {
+
+                let partOfBody = this._body[i],
+                    sameX = head.positionX === partOfBody.positionX,
+                    sameY = head.positionY === partOfBody.positionY;
+
+                if (sameX && sameY) {
+                    return true;
+                }
+
+            }
+            
+        }
+
+        return false;
+    }
+
     update(stage: createjs.Stage): void {
         if (this._body === null) {
             this.createDefaultBody(stage);
