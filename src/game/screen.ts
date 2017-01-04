@@ -11,7 +11,7 @@ export class Screen {
         return this._game;
     }
 
-    screenSetted(game: Game) {
+    constructor(game: Game) {
         this._game = game;
         this._stage = new createjs.Stage(this._game.id);
     }

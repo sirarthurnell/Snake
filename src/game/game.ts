@@ -34,10 +34,14 @@ export class Game {
 
     setScreen(screen: Screen) {
         this._screen = screen;
-        this._screen.screenSetted(this);
     }
 
-    update(): void {
+    startUpdating(): void {
+        createjs.Ticker.setFPS(1);
+        createjs.Ticker.addEventListener('tick', this.update.bind(this));
+    }
+
+    private update(): void {
         this._screen.update();
     }
 
