@@ -1,9 +1,9 @@
 import { Game } from './game';
 import { Grid } from './grid';
-import { GridPosition } from './gridPosition';
+import { Screen } from './screen';
 import { IGameElement } from './iGameElement';
 
-export class Tile {
+export class Tile implements IGameElement {
     private _tileShape: createjs.Shape = null;
     private _grid: Grid;
     private _game: Game;
@@ -24,12 +24,12 @@ export class Tile {
         this._positionY = y;
     }
 
-    addToGame(game: Game): void {
-        this._game = game;
-        this._grid = game.grid;
+    addToScreen(screen: Screen): void {
+        this._game = screen.game;
+        this._grid = this._game.grid;
     }
 
-    removeFromGame(stage: createjs.Stage): void {
+    removeFromScreen(stage: createjs.Stage): void {
         if (this._tileShape != null) {
             stage.removeChild(this._tileShape);
             this._tileShape = null;
@@ -42,7 +42,6 @@ export class Tile {
         }
 
         let gridPosition = this._grid.getPosition(this._positionX, this._positionY);
-        console.log(gridPosition);
         this._tileShape.x = gridPosition.pixelPositionX;
         this._tileShape.y = gridPosition.pixelPositionY;
     }
@@ -57,15 +56,13 @@ export class Tile {
             height = this._grid.tileSizeY;
 
         g
-            .beginFill("yellow")
+            .beginFill('yellow')
             .drawRect(0, 0, width, height);
 
         tileShape.x = x;
         tileShape.y = y;
-        
+
         this._tileShape = tileShape;
         stage.addChild(this._tileShape);
-
-        console.log(this._tileShape);
     }
 }

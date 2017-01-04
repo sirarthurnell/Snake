@@ -1,13 +1,12 @@
 import * as $ from 'jquery';
 import { Grid } from './grid';
-import { IGameElement } from './iGameElement';
+import { Screen } from './screen';
 
 export class Game {
 
     private _$canvas: JQuery;
     private _$container: JQuery;
-    private _gameElements: IGameElement[];
-    private _stage: createjs.Stage;
+    private _screen: Screen;
 
     private _id: string;
     get id(): string {
@@ -22,7 +21,7 @@ export class Game {
     constructor(grid: Grid) {
         this._grid = grid;
         this._id = 'snakeCanvas';
-        this._gameElements = [];
+        this._screen = null;
     }
 
     createCanvas(container: HTMLDivElement) {
@@ -31,29 +30,15 @@ export class Game {
         this._$canvas
             .css('background-color', 'green')
             .appendTo($(container));
-
-        this._stage = new createjs.Stage(this._id);
     }
 
-    addGameElement(gameElement: IGameElement) {
-        this._gameElements.push(gameElement);
-        gameElement.addToGame(this);
-    }
-
-    removeGameElement(gameElement: IGameElement) {
-        let index = this._gameElements.indexOf(gameElement);
-        if (index > -1) {
-            gameElement.removeFromGame(this._stage);
-            this._gameElements.splice(index, 1);
-        }
+    setScreen(screen: Screen) {
+        this._screen = screen;
+        this._screen.screenSetted(this);
     }
 
     update(): void {
-        this._gameElements.forEach(element => {
-            element.update(this._stage);
-        });
-
-        this._stage.update();
+        this._screen.update();
     }
 
 }

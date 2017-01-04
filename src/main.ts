@@ -1,6 +1,7 @@
 import * as $ from 'jquery';
 import { Grid } from './game/grid';
 import { Game } from './game/game';
+import { GameScreen } from './game/gameScreen';
 import { Background } from './game/background';
 import { Tile } from './game/tile';
 
@@ -8,6 +9,7 @@ $(function(){
 
     let grid: Grid,
         game: Game,
+        gameScreen: GameScreen,
         background: Background,
         tile: Tile,
         container: HTMLDivElement;
@@ -17,11 +19,13 @@ $(function(){
     grid = new Grid(10, 10, 10, 10);
     game = new Game(grid);
     game.createCanvas(container);
+    gameScreen = new GameScreen();
+    game.setScreen(gameScreen);
 
     background = new Background();
-    game.addGameElement(background);
+    gameScreen.addGameElement(background);
     tile = new Tile();
-    game.addGameElement(tile);
+    gameScreen.addGameElement(tile);
     tile.positionX = 3;
     tile.positionY = 3;
 

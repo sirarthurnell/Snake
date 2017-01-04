@@ -1,4 +1,5 @@
 import { Game } from './game';
+import { Screen } from './screen';
 import { Grid } from './grid';
 import { IGameElement } from './iGameElement';
 
@@ -8,12 +9,12 @@ export class Background implements IGameElement {
     private _grid: Grid;
     private _game: Game;
 
-    addToGame(game: Game): void {
-        this._game = game;
-        this._grid = game.grid;
+    addToScreen(screen: Screen): void {
+        this._game = screen.game;
+        this._grid = this._game.grid;
     }
 
-    removeFromGame(stage: createjs.Stage): void {
+    removeFromScreen(stage: createjs.Stage): void {
         if (this._gridShape != null) {
             stage.removeChild(this._gridShape);
             this._gridShape = null;
