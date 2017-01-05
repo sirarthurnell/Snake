@@ -87,10 +87,6 @@ export class BetterSnake implements IGameElement {
 
         backward = backwardX || backwardY;
 
-        console.log({ currentDirection: this._currentDirection, direction: direction });
-        console.log({ backwardX: backwardX, backwardY: backwardY, backward: backward });
-        console.log('------------------');
-
         return backward;
     }
 
