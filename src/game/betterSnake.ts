@@ -46,24 +46,30 @@ export class BetterSnake implements IGameElement {
     }
 
     avanceOne(direction: Direction): void {
-        if (!this.checkBackwardDirection(direction)) {
-            switch (direction) {
-                case Direction.Down:
-                    this.updateBodyPosition(this.positionX, this.positionY + 1);
-                    break;
-                case Direction.Up:
-                    this.updateBodyPosition(this.positionX, this.positionY - 1);
-                    break;
-                case Direction.Left:
-                    this.updateBodyPosition(this.positionX - 1, this.positionY);
-                    break;
-                case Direction.Right:
-                    this.updateBodyPosition(this.positionX + 1, this.positionY);
-                    break;
-            }
+        let continueDirection: Direction = Direction.None;
 
-            this._currentDirection = direction;
+        if (this.checkBackwardDirection(direction)) {
+            continueDirection = this._currentDirection;
+        } else {
+            continueDirection = direction;
         }
+
+        switch (continueDirection) {
+            case Direction.Down:
+                this.updateBodyPosition(this.positionX, this.positionY + 1);
+                break;
+            case Direction.Up:
+                this.updateBodyPosition(this.positionX, this.positionY - 1);
+                break;
+            case Direction.Left:
+                this.updateBodyPosition(this.positionX - 1, this.positionY);
+                break;
+            case Direction.Right:
+                this.updateBodyPosition(this.positionX + 1, this.positionY);
+                break;
+        }
+
+        this._currentDirection = continueDirection;
     }
 
     private checkBackwardDirection(direction: Direction): boolean {
@@ -75,11 +81,16 @@ export class BetterSnake implements IGameElement {
             ((this._currentDirection === Direction.Left) && (direction === Direction.Right)) ||
             ((this._currentDirection === Direction.Right) && (direction === Direction.Left));
 
-        backwardX =
+        backwardY =
             ((this._currentDirection === Direction.Up) && (direction === Direction.Down)) ||
             ((this._currentDirection === Direction.Down) && (direction === Direction.Up));
 
         backward = backwardX || backwardY;
+
+        console.log({ currentDirection: this._currentDirection, direction: direction });
+        console.log({ backwardX: backwardX, backwardY: backwardY, backward: backward });
+        console.log('------------------');
+
         return backward;
     }
 
