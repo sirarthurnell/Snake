@@ -19,6 +19,7 @@ export class BetterSnake implements IGameElement {
 
     addToScreen(screen: Screen): void {
         this._screen = screen;
+        this._body.forEach((tile) => this._screen.addGameElement(tile));
     }
 
     removeFromScreen(stage: createjs.Stage): void {
@@ -32,10 +33,6 @@ export class BetterSnake implements IGameElement {
     }
 
     update(stage: createjs.Stage): void {
-        if (this._body === null) {
-            this.createDefaultBody(stage);
-        }
-
         this.updateTiles(stage);
     }
 
@@ -105,17 +102,15 @@ export class BetterSnake implements IGameElement {
         }
     }
 
-    private createDefaultBody(stage: createjs.Stage): void {
+    createDefaultBody(): void {
         this._body = [];
 
         for (let i = this.defaultBodyLength; i > 0; i--) {
             let newTile = new Tile();
 
             newTile.positionX = i;
-            newTile.positionY = this.positionY;
+            newTile.positionY = 1;
             newTile.color = this._color;
-
-            this._screen.addGameElement(newTile);
             this._body.push(newTile);
         }
     }

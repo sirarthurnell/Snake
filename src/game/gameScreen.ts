@@ -2,7 +2,7 @@ import * as $ from 'jquery';
 import { Screen } from './screen';
 import { Background } from './background';
 import { Tile } from './tile';
-import { Snake } from './snake';
+import { BetterSnake, Direction } from './betterSnake';
 
 enum KeyPressedCode {
     Left = 37,
@@ -14,13 +14,10 @@ enum KeyPressedCode {
 export class GameScreen extends Screen {
     private _background: Background;
     private _food: Tile;
-    private _snake: Snake;
+    private _snake: BetterSnake;
     private _keyPressedHandler = this.keyPressed.bind(this);
     private _endOfGameHandler: Function = null;
-    private _oldDirX = 1;
-    private _oldDirY = 0;
-    private _dirX = 1;
-    private _dirY = 0;
+    private _snakeDirection: Direction = Direction.Right;
 
     onScreenSetted(): void {
         $(document).on('keydown', this._keyPressedHandler);
@@ -34,23 +31,19 @@ export class GameScreen extends Screen {
         switch (event.keyCode) {
 
             case KeyPressedCode.Left:
-                this._dirX = -1;
-                this._dirY = 0;
+                this._snakeDirection = Direction.Left;
                 break;
 
             case KeyPressedCode.Right:
-                this._dirX = 1;
-                this._dirY = 0;
+                this._snakeDirection = Direction.Right;
                 break;
 
             case KeyPressedCode.Up:
-                this._dirX = 0;
-                this._dirY = -1;
+                this._snakeDirection = Direction.Up;
                 break;
 
             case KeyPressedCode.Down:
-                this._dirX = 0;
-                this._dirY = 1;
+                this._snakeDirection = Direction.Down;
                 break;
 
         }
@@ -74,38 +67,22 @@ export class GameScreen extends Screen {
     }
 
     private updateSnakePosition(): boolean {
-        let backwardX = (this._oldDirX + this._dirX) === 0,
-            backwardY = (this._oldDirY + this._dirY) === 0,
-            futureX = this._snake.positionX,
-            futureY = this._snake.positionY;
-
-        if (backwardX && backwardY) {
-            futureX += this._oldDirX;
-            futureY += this._oldDirY;
-        } else {
-            futureX += this._dirX;
-            futureY += this._dirY;
-            this._oldDirX = this._dirX;
-            this._oldDirY = this._dirY;
-        }
-
-        if (this.isCollided(futureX, futureY)) {
+        this._snake.avanceOne(this._snakeDirection);
+        if (this.isCollided()) {
             this.endOfGame();
             return false;
         } else {
-            this._snake.positionX = futureX;
-            this._snake.positionY = futureY;
             return true;
         }
     }
 
-    private isCollided(futureX: number, futureY: number): boolean {
-        return this.wouldCollideWithWalls(futureX, futureY) || this._snake.isSelfCollided();
+    private isCollided(): boolean {
+        return this.isCollidedWithWalls() || this._snake.isSelfCollided();
     }
 
-    private wouldCollideWithWalls(futureX: number, futureY: number): boolean {
-        let collidedX = futureX === this.game.grid.widthInTiles || futureX === -1,
-            collidedY = futureY === this.game.grid.heightInTiles || futureY === -1;
+    private isCollidedWithWalls(): boolean {
+        let collidedX = this._snake.positionX === this.game.grid.widthInTiles || this._snake.positionX === -1,
+            collidedY = this._snake.positionY === this.game.grid.heightInTiles || this._snake.positionY === -1;
 
         return collidedX || collidedY;
     }
@@ -127,8 +104,9 @@ export class GameScreen extends Screen {
         this._food.positionX = 3;
         this._food.positionY = 3;
 
-        this._snake = new Snake();
-        this._snake.color = 'cyan';
+        this._snake = new BetterSnake();
+        this._snake.createDefaultBody();
+        this._snake.setColor('cyan');
         this.addGameElement(this._snake);
     }
 
