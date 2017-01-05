@@ -36,6 +36,17 @@ export class Tile implements IGameElement {
         this._fillCommand.style = this.color;
     }
 
+    isInTheSamePositionOf(otherTile: Tile): boolean {
+        let sameX = this.positionX === otherTile.positionX,
+            sameY = this.positionY === otherTile.positionY;
+
+        if (sameX && sameY) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private draw(stage: createjs.Stage): void {
         let tileShape = new createjs.Shape(),
             g = tileShape.graphics,
