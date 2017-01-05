@@ -8,6 +8,7 @@ export class Game {
     private _$container: JQuery;
     private _screen: Screen;
     private _updateHandler = this.update.bind(this);
+    private _currentFPS = 1;
 
     private _id: string;
     get id(): string {
@@ -42,8 +43,13 @@ export class Game {
         this._screen.onScreenSetted();
     }
 
+    incrementFPS(): void {
+        this._currentFPS++;
+        createjs.Ticker.setFPS(this._currentFPS);
+    }
+
     startUpdating(): void {
-        createjs.Ticker.setFPS(1);
+        createjs.Ticker.setFPS(this._currentFPS);
         createjs.Ticker.addEventListener('tick', this._updateHandler);
     }
 

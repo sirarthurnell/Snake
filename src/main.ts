@@ -18,7 +18,7 @@ $(function(){
 
     gameScreen = new GameScreen(game);
     gameScreen.setEndOfGameHandler(game.end.bind(game));
-    gameScreen.init();
+    gameScreen.init(game);
     game.setScreen(gameScreen);
 
     game.startUpdating();

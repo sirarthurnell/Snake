@@ -53,14 +53,15 @@ export class GameScreen extends Screen {
         if (this.isEatingFood()) {
             this._snake.grow();
             this.changeFoodLocation();
+            this.game.incrementFPS();
         }
 
         return this.updateSnakePosition();
     }
 
     private changeFoodLocation(): void {
-        let newX = Math.floor((Math.random() * 9) + 0),
-            newY = Math.floor((Math.random() * 9) + 0);
+        let newX = Math.floor((Math.random() * this.game.grid.widthInTiles - 1) + 0),
+            newY = Math.floor((Math.random() * this.game.grid.heightInTiles - 1) + 0);
 
         this._food.positionX = newX;
         this._food.positionY = newY;
