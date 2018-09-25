@@ -12,7 +12,7 @@ $(function(){
 
     container = <HTMLDivElement> $('<div/>').appendTo('body')[0];
 
-    grid = new Grid(10, 10, 10, 10);
+    grid = new Grid(10, 10, 100, 50);
     game = new Game(grid);
     game.createCanvas(container);
 
